@@ -12,5 +12,6 @@ namespace Domain
         public string? ImageUrl { get; set; }
         //navigation property for activities the user is attending
         public ICollection<ActivityAttendee> Activities { get; set; } = [];
+        public ICollection<Photo> Photos { get; set; } = [];
     }
 }
