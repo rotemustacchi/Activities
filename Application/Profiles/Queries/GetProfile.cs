@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Application.Interfaces;
 
 namespace Application.Profiles.Queries
 {
@@ -17,12 +18,12 @@ namespace Application.Profiles.Queries
         {
             public required string UserId { get; set; }
         }
-        public class Handler(AppDbContext context, IMapper mapper) : IRequestHandler<Query, Result<UserProfile>>
+        public class Handler(AppDbContext context, IMapper mapper, IUserAccessor userAccessor) : IRequestHandler<Query, Result<UserProfile>>
         {
             public async Task<Result<UserProfile>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var profile = await context.Users
-                    .ProjectTo<UserProfile>(mapper.ConfigurationProvider)
+                    .ProjectTo<UserProfile>(mapper.ConfigurationProvider, new { currentUserId = userAccessor.GetUserId() })
                     .SingleOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
 
                 return profile ==null

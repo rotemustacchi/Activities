@@ -13,5 +13,7 @@ namespace Domain
         //navigation property for activities the user is attending
         public ICollection<ActivityAttendee> Activities { get; set; } = [];
         public ICollection<Photo> Photos { get; set; } = [];
+        public ICollection<UserFollowing> Followers { get; set; } = [];
+        public ICollection<UserFollowing> Followings { get; set; } = [];
     }
 }
