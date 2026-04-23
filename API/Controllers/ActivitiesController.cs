@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Application.Activities.Queries;
 using Application.Activities.Commands;
 using Application.Activities.DTOs;
+using Application.Core;
 using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers
@@ -10,9 +11,9 @@ namespace API.Controllers
     public class ActivitiesController : BaseApiController
     {
         [HttpGet]
-        public async Task<ActionResult<List<ActivityDto>>> GetActivities()
+        public async Task<ActionResult<PagedList<ActivityDto, DateTime?>>> GetActivities([FromQuery]ActivityParams Params)
         {
-            return await Mediator.Send(new GetActivityList.Query());
+            return HandleResult(await Mediator.Send(new GetActivityList.Query { Params = Params }));
         }
 
         [HttpGet("{id}")]
